@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="card mt-4 ">
+            <div class="d-inline p-3 fs-3">
+                <h2>Write comments to blog post</h2>
+                <hr>
+                <p>Post title - <em>{{ question.title }}</em></p>
+                <p>Post is - <strong> {{ question.body }}</strong> </p>
+            </div>
+            {% if request.user == question.author %}
+            <div class="card-footer">
+                <form method="POST" action="{% url 'blog:delete_item' model='question' pk=question.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete Post</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4 class="card-title">Comment to this Post</h4>
+                <form method="POST" action="{% url 'blog:detail' slug=question.slug %}">
+                    {% csrf_token %}
+                    {{ answer_form.as_p }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h4 class="card-title">Answers</h4>
+                {% for answer in answers %}
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ answer.user.username }}</h5>
+                            <p class="card-text">{{ answer.body }}</p>
+                            <p class="card-text"><small class="text-muted">Updated at: {{ answer.updated_at }}</small></p>
+                            {% if request.user == answer.user %}
+                            <form method="POST" action="{% url 'blog:delete_item' model='answer' pk=answer.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete Answer</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

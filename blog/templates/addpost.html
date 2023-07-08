@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="jumbotron">
+            <h2 class=" text-center">Create a New questions</h2>
+            <form class="col-6 mx-auto card p-3 shadow-lg" action="{% url 'blog:addpost' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <p class="text-center">Want to go back to Main page? <a href="{% url 'blog:index' %}">Click here</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container m-3 ">
+        <h1>Log in</h1>
+        <form class="site-form mb-1" action="{% url 'accounts:login' %}" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {% if request.GET.next %}
+              <input type="hidden" name="next" value="{{ request.GET.next }}" />
+          {% endif %}
+          <input type="submit" value="Login" />
+        </form>
+        <p>Not got an account? <a href="{% url 'accounts:register' %}">Register</a></p>
+  </div>
+{% endblock %}
